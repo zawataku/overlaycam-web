@@ -1,0 +1,379 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+[hidden] {
+  display: none !important;
+}
+
+:root {
+  --bg: #13111c;
+  --bg-elevated: #1e1a2b;
+  --surface: #262133;
+  --text: #f4f1fa;
+  --text-dim: #9d95b3;
+  --accent: #a78bfa;
+  --accent-strong: #8b5cf6;
+  --danger: #f87171;
+  --radius-lg: 24px;
+  --radius-md: 14px;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bg);
+  color: var(--text);
+  font-family: "M PLUS Rounded 1c", system-ui, sans-serif;
+  font-weight: 700;
+  -webkit-tap-highlight-color: transparent;
+  overscroll-behavior: none;
+}
+
+#app {
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  max-width: 640px;
+  margin: 0 auto;
+  padding: env(safe-area-inset-top) env(safe-area-inset-right)
+    env(safe-area-inset-bottom) env(safe-area-inset-left);
+}
+
+.app-header {
+  padding: 14px 20px 10px;
+  text-align: center;
+}
+
+.app-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(90deg, #c4b5fd, #f0abfc);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.app-title-icon {
+  margin-right: 6px;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  color: initial;
+}
+
+/* ---- ステージ (カメラプレビュー領域) ---- */
+
+.stage-wrap {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 16px;
+  container-type: size;
+}
+
+.stage {
+  position: relative;
+  aspect-ratio: 3 / 4;
+  /* 3:4 を保ったままラッパーに収まる最大サイズ */
+  width: min(100cqw, calc(100cqh * 3 / 4));
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.45);
+  touch-action: none;
+}
+
+#video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: none;
+}
+
+#video.active {
+  display: block;
+}
+
+#video.mirrored {
+  transform: scaleX(-1);
+}
+
+.overlay-layer {
+  position: absolute;
+  inset: 0;
+  cursor: grab;
+}
+
+.overlay-layer:active {
+  cursor: grabbing;
+}
+
+#overlay-img {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60%;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+  filter: drop-shadow(0 2px 12px rgba(0, 0, 0, 0.35));
+}
+
+.flash {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.flash.on {
+  animation: flash-anim 0.45s ease-out;
+}
+
+@keyframes flash-anim {
+  0% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.stage-message {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 24px;
+  text-align: center;
+  color: var(--text-dim);
+}
+
+.stage-message[hidden] {
+  display: none;
+}
+
+.stage-message-icon {
+  font-size: 3rem;
+}
+
+.stage-message p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+.overlay-tools {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  gap: 8px;
+}
+
+.chip {
+  border: none;
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: inherit;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: var(--text);
+  background: rgba(19, 17, 28, 0.65);
+  backdrop-filter: blur(8px);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.chip:hover {
+  background: rgba(19, 17, 28, 0.85);
+}
+
+.hint {
+  margin: 8px 16px 0;
+  text-align: center;
+  font-size: 0.72rem;
+  font-weight: 400;
+  color: var(--text-dim);
+}
+
+/* ---- 下部コントロール ---- */
+
+.controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
+}
+
+.ctrl-btn {
+  width: 54px;
+  height: 54px;
+  border: none;
+  border-radius: var(--radius-md);
+  background: var(--surface);
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.15s, transform 0.1s;
+}
+
+.ctrl-btn svg {
+  width: 26px;
+  height: 26px;
+}
+
+.ctrl-btn:hover {
+  background: #322b44;
+}
+
+.ctrl-btn:active {
+  transform: scale(0.93);
+}
+
+.ctrl-spacer {
+  width: 54px;
+  height: 54px;
+}
+
+.ctrl-spacer.collapsed,
+.ctrl-btn[hidden] {
+  display: none;
+}
+
+.shutter-btn {
+  width: 76px;
+  height: 76px;
+  border-radius: 50%;
+  border: 4px solid var(--accent);
+  background: transparent;
+  padding: 5px;
+  cursor: pointer;
+  transition: transform 0.1s, border-color 0.15s;
+}
+
+.shutter-btn:disabled {
+  border-color: #3c3550;
+  cursor: not-allowed;
+}
+
+.shutter-btn:disabled .shutter-inner {
+  background: #3c3550;
+}
+
+.shutter-btn:not(:disabled):active {
+  transform: scale(0.92);
+}
+
+.shutter-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #c4b5fd, #8b5cf6);
+}
+
+/* ---- ボタン共通 ---- */
+
+.btn {
+  border: none;
+  border-radius: 999px;
+  padding: 12px 26px;
+  font-family: inherit;
+  font-weight: 800;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.15s;
+}
+
+.btn:active {
+  transform: scale(0.96);
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #a78bfa, #8b5cf6);
+  color: #fff;
+}
+
+.btn-primary:hover {
+  filter: brightness(1.1);
+}
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  background: #322b44;
+}
+
+/* ---- 撮影結果 ---- */
+
+.result {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(10, 8, 16, 0.82);
+  backdrop-filter: blur(10px);
+}
+
+.result[hidden] {
+  display: none;
+}
+
+.result-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  max-width: 480px;
+  width: 100%;
+  max-height: 100%;
+  padding: 22px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-lg);
+  box-shadow: 0 12px 60px rgba(0, 0, 0, 0.6);
+}
+
+.result-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 800;
+}
+
+#result-img {
+  max-width: 100%;
+  max-height: 60dvh;
+  min-height: 0;
+  object-fit: contain;
+  border-radius: var(--radius-md);
+}
+
+.result-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
