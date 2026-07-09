@@ -218,6 +218,9 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+  width: 100%;
+  max-width: 400px;
+  margin-inline: auto;
   padding: 18px 16px calc(18px + env(safe-area-inset-bottom));
 }
 
