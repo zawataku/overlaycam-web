@@ -31,6 +31,17 @@ npm run build    # 本番ビルド → dist/
 npm run preview  # ビルド結果のプレビュー
 ```
 
+### スマホ実機での確認 (LAN + HTTPS)
+
+`getUserMedia` はセキュアコンテキスト必須のため、LAN内の実機確認用に自己署名証明書でHTTPS配信するモードがあります。
+
+```sh
+npm run dev:lan
+```
+
+起動時に表示される `Network: https://<PCのIP>:5173/` にスマホのブラウザでアクセスしてください。
+自己署名証明書のため警告が表示されますが、「詳細設定」→「続行」で開けばカメラも動作します。
+
 ## Cloudflare Pages へのデプロイ
 
 ### ダッシュボードから (Git連携)
