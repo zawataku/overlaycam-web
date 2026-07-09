@@ -12,6 +12,7 @@ import {
   type Transform,
 } from "./gestures";
 import { composite } from "./composite";
+import { icons } from "./icons";
 
 const $ = <T extends HTMLElement>(id: string): T =>
   document.getElementById(id) as T;
@@ -56,12 +57,12 @@ async function initCamera(): Promise<void> {
   shutterBtn.disabled = true;
   video.classList.remove("active");
   stageMessage.hidden = false;
-  stageMessageIcon.textContent = "📷";
+  stageMessageIcon.innerHTML = icons.camera;
   stageMessageText.textContent = "カメラを起動しています…";
   retryBtn.hidden = true;
 
   if (!navigator.mediaDevices?.getUserMedia) {
-    stageMessageIcon.textContent = "⚠️";
+    stageMessageIcon.innerHTML = icons.alert;
     stageMessageText.textContent =
       "このブラウザではカメラを利用できません。\nHTTPSでアクセスしているか確認してください。";
     return;
@@ -84,7 +85,7 @@ async function initCamera(): Promise<void> {
     }
   } catch (err) {
     console.error("カメラの初期化エラー:", err);
-    stageMessageIcon.textContent = "🚫";
+    stageMessageIcon.innerHTML = icons.cameraOff;
     stageMessageText.textContent = cameraErrorMessage(err);
     retryBtn.hidden = false;
   }

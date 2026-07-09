@@ -51,9 +51,16 @@ body {
 
 .app-title {
   margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
   font-size: 1.25rem;
   font-weight: 800;
   letter-spacing: 0.04em;
+}
+
+.app-title-text {
   background: linear-gradient(90deg, #c4b5fd, #f0abfc);
   -webkit-background-clip: text;
   background-clip: text;
@@ -61,10 +68,9 @@ body {
 }
 
 .app-title-icon {
-  margin-right: 6px;
-  -webkit-background-clip: initial;
-  background-clip: initial;
-  color: initial;
+  width: 22px;
+  height: 22px;
+  color: #c4b5fd;
 }
 
 /* ---- ステージ (カメラプレビュー領域) ---- */
@@ -167,8 +173,9 @@ body {
   display: none;
 }
 
-.stage-message-icon {
-  font-size: 3rem;
+.stage-message-icon svg {
+  width: 52px;
+  height: 52px;
 }
 
 .stage-message p {
@@ -187,6 +194,9 @@ body {
 }
 
 .chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
   border: none;
   border-radius: 999px;
   padding: 8px 14px;
@@ -202,6 +212,11 @@ body {
 
 .chip:hover {
   background: rgba(19, 17, 28, 0.85);
+}
+
+.chip svg {
+  width: 13px;
+  height: 13px;
 }
 
 .hint {
@@ -302,6 +317,9 @@ body {
 /* ---- ボタン共通 ---- */
 
 .btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   border: none;
   border-radius: 999px;
   padding: 12px 26px;
@@ -314,6 +332,11 @@ body {
 
 .btn:active {
   transform: scale(0.96);
+}
+
+.btn svg {
+  width: 17px;
+  height: 17px;
 }
 
 .btn-primary {
