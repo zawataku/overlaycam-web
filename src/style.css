@@ -210,6 +210,12 @@ body {
   font-size: 0.72rem;
   font-weight: 400;
   color: var(--text-dim);
+  /* display切り替えだとオーバーレイ選択時にステージが縮むため、常に高さを確保する */
+  visibility: hidden;
+}
+
+.hint.visible {
+  visibility: visible;
 }
 
 /* ---- 下部コントロール ---- */

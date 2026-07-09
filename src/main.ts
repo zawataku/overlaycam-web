@@ -116,7 +116,7 @@ overlayImg.addEventListener("load", () => {
   applyTransform();
   overlayLayer.hidden = false;
   overlayTools.hidden = false;
-  hint.hidden = false;
+  hint.classList.add("visible");
 });
 
 function applyTransform(): void {
@@ -144,7 +144,7 @@ removeOverlayBtn.addEventListener("click", () => {
   hasOverlay = false;
   overlayLayer.hidden = true;
   overlayTools.hidden = true;
-  hint.hidden = true;
+  hint.classList.remove("visible");
   overlayImg.removeAttribute("src");
   if (overlayUrl) {
     URL.revokeObjectURL(overlayUrl);
