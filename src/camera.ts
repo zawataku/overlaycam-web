@@ -2,20 +2,36 @@ export type FacingMode = "environment" | "user";
 
 /**
  * カメラを起動して video 要素に接続する。
- * できるだけ高解像度のストリームを要求する (実際の解像度はブラウザが決める)。
+ *
+ * 解像度は 1920x1440 を上限に要求する。ideal: 4096 のような過大な要求は
+ * ローエンドAndroid端末 (例: Arrows We2) でカメラドライバがセンサー最大
+ * 解像度のストリーミングを試みてブラウザごとクラッシュすることがある。
  */
 export async function startCamera(
   video: HTMLVideoElement,
   facingMode: FacingMode,
 ): Promise<MediaStream> {
-  const stream = await navigator.mediaDevices.getUserMedia({
-    video: {
-      facingMode,
-      width: { ideal: 4096 },
-      height: { ideal: 4096 },
-    },
-    audio: false,
-  });
+  let stream: MediaStream;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      video: {
+        facingMode,
+        width: { ideal: 1920 },
+        height: { ideal: 1440 },
+      },
+      audio: false,
+    });
+  } catch (err) {
+    // 権限拒否以外 (解像度指定に起因する失敗など) は指定なしで再試行する
+    if (err instanceof DOMException && err.name !== "NotAllowedError") {
+      stream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode },
+        audio: false,
+      });
+    } else {
+      throw err;
+    }
+  }
   video.srcObject = stream;
   await video.play();
   return stream;
