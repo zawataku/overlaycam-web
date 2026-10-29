@@ -41,21 +41,3 @@ npm run dev:lan
 
 起動時に表示される `Network: https://<PCのIP>:5173/` にスマホのブラウザでアクセスしてください。
 自己署名証明書のため警告が表示されますが、「詳細設定」→「続行」で開けばカメラも動作します。
-
-## Cloudflare へのデプロイ
-
-静的アセットのみの Workers 構成 ([wrangler.jsonc](wrangler.jsonc)) でデプロイします。
-
-### ダッシュボードから (Git連携)
-
-1. Cloudflare ダッシュボード → **Workers & Pages** → **Create** → リポジトリを接続
-2. ビルド設定:
-   - **Build command**: `npm run build`
-   - **Deploy command**: `npx wrangler deploy`
-
-### CLI から (Wrangler)
-
-```sh
-npm run build
-npx wrangler deploy
-```
